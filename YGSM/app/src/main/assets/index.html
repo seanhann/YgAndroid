@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>易购商盟</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/swiper.min.css" rel="stylesheet">
+    <link href="./css/egsm.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/swiper.min.js"></script>
+    <script src="./js/egsm.js"></script>
+<script>
+$(function(){
+	var page = 1;
+	function load(page){
+		var item = ' <li class="list-group-item btn"> <a href="/egsm/detail/@id@"> <div class="media"> <div class="media-left"> <img alt="90x90" class="media-object" data-src="holder.js/90x90" src="http://www.egousm.com/@pic@" data-holder-rendered="true" style="width: 90px; height: 90px; border-radius: 5px;">	</div> <div class="media-body" style="padding: 5px"> <div class="media-heading" style="font-weight: bold; font-size:17px">@title@</div> <p style="font-size: 12px; color:#666">@content@</p> </div> </div> </a> </li>';
+
+		var map = ['@id@', '@title@', '@pic@', '@content@'];
+		$.get('/egsm/content?page='+page, function(data){
+			if(data.length > 0){
+				var html = '';
+				$.each(data, function(i, v){
+					var res = item.replace(/@id@|@pic@|@title@|@content@/gi, function myFunction(x){
+						return v[map.indexOf(x)];
+					});
+					html += res;
+				});
+				$(".content ul").append(html);
+			}else{
+				$(".bottom-loading").empty();	
+			}
+			$(".loading-page").css('display', 'none');
+		});
+	}
+	load(page);
+
+	$(window).scroll(function() {
+	    if($(window).scrollTop() >= $(document).height() - $(window).height()) {
+		page+=1;
+		load(page);
+	    }
+	});
+});
+</script>
+
+  </head>
+  <body>
+	<nav class="navbar navbar-default search navbar-head navbar-fixed-top">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      	<a class="navbar-brand" href="/egsm">易购</a>
+		<div class="form-group form-head has-feedback has-feedback-left">
+		    <form action="/egsm/search" method="get">
+		    <input type="search" name="search" class="form-control" placeholder="输入商家/品类/商圈"  value="" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" data-toggle="collapse"/>
+		    </form>
+		    <i class="form-control-feedback glyphicon glyphicon-search"></i>
+		</div>
+	
+	    </div>
+	
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <div class="panel panel-default hot-search">
+	      <div class="panel-heading">热门搜索<a class="close" href="#">X</a></div>
+	      <div class="panel-body">
+	      <ul class="nav">
+	        <li><a href="/egsm/search/key_words">$hot->key_words</a></li>
+	      </ul>
+	      </div>
+	      </div>
+
+	      <div class="panel panel-default history-search">
+	      <div class="panel-heading">历史搜索</div>
+	      <div class="panel-body">
+	      <ul class="nav">
+	        <li><a href="#">历史搜索</a></li>
+	        <li><a href="#">历史搜索</a></li>
+	        <li><a href="#">历史搜索</a></li>
+	      </ul>
+	      </div>
+	      </div>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div style="height:35px;width: 100%"></div>
+
+<!--<div class="loading-page">
+	<div class="middle"></div>
+	<div> <h1>易购商盟</h1> </div>
+	<div> <span class="glyphicon glyphicon-refresh spinning"></span> </div>
+</div> -->
+<!-- Swiper -->
+<div class="swiper-container catalog-swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+		<div class="btn-group btn-group-lg catalog" role="group">
+
+		<a href="/egsm/search/餐饮娱乐" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-glass" style="background: #fd9d21"></span> </div>
+			<span style=" font-size: 10px; ">餐饮娱乐</span>
+		</a>
+		<a href="/egsm/search/商超门市" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-shopping-cart" style="background: #599eec"></span> </div>
+			<span style=" font-size: 10px; ">商超门市</span>
+		</a>
+		<a href="/egsm/search/汽车服务" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-wrench" style="background: #ff6767"></span> </div>
+			<span style=" font-size: 10px; ">汽车服务</span>
+		</a>
+		<a href="/egsm/search/家居家装" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-home" style="background: #4dc6ee"></span> </div>
+			<span style=" font-size: 10px; ">家居家装</span>
+		</a>
+		<a href="/egsm/search/美容养生" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-scale" style="background: #ff80c2"></span> </div>
+			<span style=" font-size: 10px; ">美容养生</span>
+		</a>
+		<a href="/egsm/search/学习培训" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-education" style="background: #fed030"></span> </div>
+			<span style=" font-size: 10px; ">学习培训</span>
+		</a>
+		<a href="/egsm/search/通讯数码" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-signal" style="background: #84d23d"></span> </div>
+			<span style=" font-size: 10px; ">通讯数码</span>
+		</a>
+		<a href="/egsm/search/珠宝文玩" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-yen" style="background: #fd9d21"></span> </div>
+			<span style=" font-size: 10px; ">珠宝文玩</span>
+		</a>
+		<a href="/egsm/search/生活服务" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-cutlery" style="background: #599eec"></span> </div>
+			<span style=" font-size: 10px; ">生活服务</span>
+		</a>
+		<a href="/egsm/search/数码家电" class="btn" role="button">
+			<div> <span class="glyphicon glyphicon-phone" style="background: #ff6767"></span> </div>
+			<span style=" font-size: 10px; ">数码家电</span>
+		</a>
+
+		</div>
+	</div>
+        <div class="swiper-slide">
+
+		<div class="btn-group btn-group-lg catalog" role="group">
+		<a href="/egsm/search/服饰箱包" class="btn" role="button">
+		<div>
+		<span class="glyphicon glyphicon-object-align-bottom" style="background: #4dc6ee"></span>
+		</div>
+		<span style=" font-size: 10px; ">服饰箱包</span>
+		</a>
+		<a href="/egsm/search/海鲜大全" class="btn" role="button">
+		<div>
+		<span class="glyphicon glyphicon-tint" style="background: #ff80c2"></span>
+		</div>
+		<span style=" font-size: 10px; ">海鲜大全</span>
+		</a>
+		<a href="/egsm/search/进口食品" class="btn" role="button">
+		<div>
+		<span class="glyphicon glyphicon-plane" style="background: #fed030"></span>
+		</div>
+		<span style=" font-size: 10px; ">进口食品</span>
+		</a>
+		</div>
+
+	</div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
+
+<div class="panel panel-default special-offer">
+<div class="panel-heading"></div>
+
+<ul class="list-group">
+		<li><a href="#"> <img width="100%" src="http://www.egousm.com/images/101.jpg"> </a></li> 
+		<li><a href="#"> <img width="100%" src="http://www.egousm.com/images/102.jpg"> </a></li> 
+		<li><a href="#"> <img width="100%" src="http://www.egousm.com/images/103.jpg"> </a></li> 
+		<li><a href="#"> <img width="100%" src="http://www.egousm.com/images/104.jpg"> </a></li> 
+		<li><a href="#"> <img width="100%" src="http://www.egousm.com/images/105.jpg"> </a></li> 
+</ul>
+
+<div class="panel-heading"></div>
+</div>
+
+<div class="content">
+	<div class="panel-heading">猜你喜欢</div>
+	<ul class="list-group">
+	</ul>
+	<div class="bottom-loading">上拉加载更多</div>
+</div>
+
+	<nav class="navbar navbar-default navbar-fixed-bottom"> 
+		<div class="container-fluid"> 
+			<div class="navbar-header"> 
+				<div class="btn-group btn-group btn-group-justified" role="group" aria-label="Justified button group"> 
+					<a href="./index.html" class="btn" role="button"><span class="glyphicon glyphicon-home"></span><br><span style=" font-size: 10px; ">首页</span></a>
+					<a href="#" class="btn" role="button"><span class="glyphicon glyphicon-map-marker"></span><br><span style=" font-size: 10px; ">附近</span></a>
+					<a href="http://shaiii.com/info.html" class="btn" role="button"><span class="glyphicon glyphicon-user"></span><br><span style=" font-size: 10px; ">我的</span></a>
+				</div>
+			</div> 
+		</div> 
+	</nav>
+
+
+  </body>
+</html>
