@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>易购商盟</title>
+
+      <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="./css/swiper.min.css" rel="stylesheet">
+      <link href="./css/egsm.css" rel="stylesheet">
+      <script src="./js/jquery-1.12.4.min.js"></script>
+      <script src="./bootstrap/js/bootstrap.min.js"></script>
+      <script src="./js/swiper.min.js"></script>
+      <script src="./js/egsm.js"></script>
+    <script>
+        $(function(){
+		if(localStorage.user){
+			data = JSON.parse(localStorage.user);
+                	$.get('/api/comments/'+data.id+'|'+data.remember_token, function(data){
+				html = '';
+				if(data.length > 0){
+					$.each(data, function(i, v){
+						html += '<div class="panel panel-default"> <div class="panel-heading"></div> <div class="panel-body"> '+ v.body +' </div> </div>';
+					});
+				}else{
+					html = '<div style="text-align:center; padding: 50px 0px 0px 0px"> <img src="./images/nothing.ico" alt="..." style="width:100px"> <div class="caption"> <p style=" text-align: center; ">这里啥都没有</p> </div> </div>';
+				}
+				$(".detail").html(html);
+                	}).always(function() {
+                	        $(".loading-page").css('display', 'none');
+                	});
+		}else{
+			html = '<div style="text-align:center; padding: 50px 0px 0px 0px"> <img src="./images/nothing.ico" alt="..." style="width:100px"> <div class="caption"> <p style=" text-align: center; ">出错了主人</p> </div> </div>';
+			$(".detail").html(html);
+                	$(".loading-page").css('display', 'none');
+		}
+        });
+    </script>
+  </head>
+  <body>
+        <div class="loading-page">
+                <div class="middle"></div>
+                <div> <h1>易购商盟</h1> </div>
+                <div> <span class="glyphicon glyphicon-refresh spinning"></span> </div>
+        </div>
+	<nav class="navbar navbar-default secondary navbar-head navbar-fixed-top">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+		<div class="title">我的评价</div>
+	      	<a class="navbar-brand" href="/info.html"><span class="glyphicon glyphicon-menu-left"></span></a>
+	    </div>
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div style="height:35px;width: 100%"></div>
+	<div class="detail"></div>
+
+  </body>
+</html>

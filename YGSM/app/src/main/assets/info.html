@@ -58,7 +58,7 @@
 					<div class="form-group has-feedback login-captcha">
 					  <div class="input-group">
 					    <span class="input-group-addon">
-						<img src="http://shaiii.com/captcha" class="captcha-img"/>
+						<img src="" class="captcha-img"/>
 					    <a class="btn refresh">
 						<span class="input-group-addon">
 						<span class="glyphicon glyphicon-repeat"></span>
@@ -75,7 +75,7 @@
 					  </div>
 					</div>
 
-					<button type="submit" class="btn btn-info disabled btn-login" data-loading-text="登录中..." data-toggle="tooltip" data-placement="bottom" title="登录">登录</button>
+					<button type="submit" disabled class="btn btn-info btn-login" data-loading-text="登录中..." data-toggle="tooltip" data-placement="top" title="登录">登录</button>
 
 					</form>
 				</div>
@@ -102,7 +102,7 @@
 					<div class="form-group has-feedback">
 					  <div class="input-group">
 					    <span class="input-group-addon">
-						<img src="http://shaiii.com/captcha" class="captcha-img"/>
+						<img src="" class="captcha-img"/>
 					    <a class="btn refresh">
 						<span class="input-group-addon">
 						<span class="glyphicon glyphicon-repeat"></span>
@@ -118,7 +118,7 @@
 					    <input type="text" name="captcha" class="form-control no-border" aria-describedby="captcha" style="box-shadow:none" placeholder="请输入验证码">
 					  </div>
 					</div>
-					<button type="submit" class="btn btn-info disabled btn-login" data-loading-text="注册中..." data-toggle="tooltip" data-placement="bottom" title="注册">注册</button>
+					<button type="submit" disabled class="btn btn-info btn-login" data-loading-text="注册中..." data-toggle="tooltip" data-placement="top" title="注册">注册</button>
 					</form>
 
 				</div>
@@ -143,22 +143,22 @@
 		<div class="panel panel-default self-list">
 		  <div class="panel-heading"></div>
 		  <div class="list-group require-auth">
-		    <a href="/egsm/points" class="list-group-item list-group-item-action">
+		    <a href="/points" class="list-group-item list-group-item-action" actionId=0>
 		      <span class="glyphicon glyphicon-piggy-bank blue-icon"></span>
 		      <span class="text">我的积分</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
 		    </a>
-		    <a href="/egsm/info" class="list-group-item list-group-item-action">
+		    <a href="/info" class="list-group-item list-group-item-action" actionId=1>
 		      <span class="glyphicon glyphicon-list blue-icon"></span>
 		      <span class="text">个人资料</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
 		    </a>
-		    <a href="/egsm/comments" class="list-group-item list-group-item-action">
+		    <a href="./comments.html" class="list-group-item list-group-item-action">
 		      <span class="glyphicon glyphicon-comment red-icon"></span>
 		      <span class="text">我的评价</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
 		    </a>
-		    <a href="/egsm/favorites" class="list-group-item list-group-item-action">
+		    <a href="./favorites.html" class="list-group-item list-group-item-action">
 		      <span class="glyphicon glyphicon-heart red-icon"></span>
 		      <span class="text">我的收藏</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
@@ -171,7 +171,7 @@
 		      <span class="text">客服中心</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
 		    </a>
-		    <a href="#" class="list-group-item list-group-item-action">
+		    <a href="/about" class="list-group-item list-group-item-action" actionId=4>
 		      <span class="glyphicon glyphicon-info-sign green-icon"></span>
 		      <span class="text">关于美团</span>
 		      <span class="badge"><span class="glyphicon glyphicon-menu-right"></span></span>
@@ -185,7 +185,7 @@
 			<div class="navbar-header"> 
 				<div class="btn-group btn-group btn-group-justified" role="group" aria-label="Justified button group"> 
 					<a href="./index.html" class="btn" role="button"><span class="glyphicon glyphicon-home"></span><br><span style=" font-size: 10px; ">首页</span></a>
-					<a href="#" class="btn" role="button"><span class="glyphicon glyphicon-map-marker"></span><br><span style=" font-size: 10px; ">附近</span></a>
+					<a href="./near.html" class="btn" role="button"><span class="glyphicon glyphicon-map-marker"></span><br><span style=" font-size: 10px; ">附近</span></a>
 					<a href="#" class="btn" role="button" aria-controls="myself" data-target="#myself" aria-expanded="false" data-toggle="collapse"><span class="glyphicon glyphicon-user"></span><br><span style=" font-size: 10px; ">我的</span></a>
 				</div>
 			</div>  

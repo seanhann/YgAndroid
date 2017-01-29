@@ -1,8 +1,10 @@
+var baseUrl = 'http://yg.shaiii.com';
 $(document).ready(function() {
-	var baseUrl = 'http://shaiii.com';
 	$.ajaxSetup({
 	    beforeSend: function(xhr, options) {
-	        options.url = baseUrl + options.url;
+	        if(options.url.indexOf("baidu") == -1){
+	            options.url = baseUrl + options.url;
+	        }
 	    }
 	})
 
@@ -12,7 +14,6 @@ $(document).ready(function() {
 		if(data) localStorage.user = data;
 		showInfo();
 		$('.login').modal('hide');
-
 	}
 
 	function showInfo(){
@@ -27,7 +28,7 @@ $(document).ready(function() {
 	}
 
 	function getInfo(){
-		$.get('/egsm/user', function(data){
+		$.get('/user', function(data){
 			if(data){ 
 			        localStorage.user = data;
 				showInfo();
@@ -47,22 +48,22 @@ $(document).ready(function() {
 	}
 
 	function refreshCaptcha(){
-		$(".captcha-img").attr('src', '/captcha');
+		$(".captcha-img").attr('src', baseUrl+'/captcha');
 	}
 
 	function init(){
 		if($(".username").length){
 			updateToken();
 			showInfo();
-			getInfo();
+			//getInfo();
 		}
 	}
 
-        $.ajaxSetup({
-        	headers: {
-        	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        	}
-        });
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
 	init();
 
@@ -70,8 +71,18 @@ $(document).ready(function() {
 		if(!localStorage.user){
 			$(".login").modal('show');
 			e.preventDefault();
-		}	
+		}
 	});
+
+	$("a[actionId]").click(function(e){
+        localStorage.actionId = $(this).attr('actionId');
+
+        window.location.href = './staff.html';
+
+        e.preventDefault();
+	});
+
+    $("img.captcha-img").attr('src', baseUrl+'/captcha');
 
 	$(".refresh").click(function(){
 		refreshCaptcha();
@@ -81,7 +92,7 @@ $(document).ready(function() {
 
 	$(".login-form").submit(function(event){
 		var $btn = $(this).find(":submit").button('loading');
-		$.post('/egsm/login',$(this).serialize(), function(data){
+		$.post('/login',$(this).serialize(), function(data){
 			if(data){
 				if(data.code == 1){
 					loginSuccess(data.msg);
@@ -112,7 +123,7 @@ $(document).ready(function() {
 			});	
 		}else{
 			var $btn = $(this).find(":submit").button('loading');
-			$.post('/egsm/regist',$(this).serialize(), function(data){
+			$.post('/regist',$(this).serialize(), function(data){
 				if(data){
 					if(data.code == 1){
 						loginSuccess(data.msg);
@@ -129,43 +140,40 @@ $(document).ready(function() {
 		event.preventDefault();
 	});
 
-	$(".info-form").submit(function(event){
-		var $btn = $(this).find(":submit").button('loading');
-		$.post('/egsm/info',$(this).serialize(), function(data){
-			if(data){
-				$(".info-form :submit").attr('data-original-title', data.msg).tooltip('show').on('shown.bs.tooltip', function () {
-					setTimeout(function(){ $(".login-form :submit").tooltip('hide'); }, 1500);
-				});
-			}
-		}).always(function() {
-			$btn.button('reset');
-  		});
-		event.preventDefault();
-	});
+        $(".info-form").submit(function(event){
+                var $btn = $(this).find(":submit").button('loading');
+                $.post('/info',$(this).serialize(), function(data){
+                        if(data){
+                                $(".info-form :submit").attr('data-original-title', data.msg).tooltip('show').on('shown.bs.tooltip', function () {
+                                        setTimeout(function(){ $(".info-form :submit").tooltip('hide'); }, 1500);
+                                });
+                        }
+                }).always(function(){
+                        $btn.button('reset');
+                });
+                event.preventDefault();
+        });
+        $(".info-form input, .info-form select").change(function(){
+                $(".btn-info").css('display', 'inline-block');
 
+        });
 
-    	var $loginFields = $(".login-form input");
-    	$loginFields.keyup(function() {
-    	    var $loginEmptyFields = $loginFields.filter(function() {
-    	        return $.trim(this.value) === "";
-    	    });
+        $(".login-form input").keyup(function(){
+                if( $(".login-form input[name='username']").val() != '' &&  $(".login-form input[name='password']").val() != '' && $(".login-form input[name='captcha']").val() != ''){
+                        $(".login-form :submit").removeAttr("disabled");
+                }else{
+                        $(".login-form :submit").attr("disabled", 'disabled');
+                }
+        });
 
-    	    if (!$loginEmptyFields.length) {
-		$(".login-form :submit").removeClass("disabled");
-    	    }
-    	});
+        $(".register-form input").keyup(function(){
+                if( $(".register-form input[name='username']").val() != '' &&  $(".register-form input[name='password']").val() != '' && $(".register-form input[name='confirm']").val() != '' && $(".register-form input[name='captcha']").val() != ''){
+                        $(".register-form :submit").removeAttr("disabled");
+                }else{
+                        $(".register-form :submit").attr("disabled", 'disabled');
+                }
+        });
 
-    	var $fields = $(".register-form input");
-    	$fields.keyup(function() {
-    	    var $emptyFields = $fields.filter(function() {
-    	        return $.trim(this.value) === "";
-    	    });
-
-    	    if (!$emptyFields.length) {
-		if($(".register-form :password[name='confirm']").val() == $(".register-form :password[name='password']").val() )
-			$(".register-form :submit").removeClass("disabled");
-    	    }
-    	});
 
 	var loginSwiper;
     	var swiper = new Swiper('.catalog-swiper', {
@@ -198,7 +206,7 @@ $(document).ready(function() {
 	});
 
 	$(".search form").submit(function(e){
-		window.location.href = '/egsm/search/'+$(this).find("input[name='search']").val();
+		window.location.href = '/search/'+$(this).find("input[name='search']").val();
 		e.preventDefault();
 	});
 
@@ -213,7 +221,7 @@ $(document).ready(function() {
 		var h = localStorage.history ? JSON.parse( localStorage.history ) : [];
 		var list = '';
 		$.each(h, function(i, v){
-			list += '<li><a href="/egsm/search/'+v+'">'+v+'</a></li>';
+			list += '<li><a href="/search/'+v+'">'+v+'</a></li>';
 		});	
 		$('.history-search ul').html(list);
 	});
@@ -245,7 +253,7 @@ $(document).ready(function() {
 		}else{
 			$(".favour span").removeClass('glyphicon-heart').addClass('glyphicon-heart-empty');
 		}
-		$.post('/egsm/favorite', {aid: $(this).attr('value')}, function(data){
+		$.post('/favorite', {aid: $(this).attr('value')}, function(data){
 			if(data){
 				if(data.code == 1){
 					$(".favour span").removeClass('glyphicon-heart-empty').addClass('glyphicon-heart');

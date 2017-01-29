@@ -42,8 +42,8 @@ public class YGSM extends AppCompatActivity {
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         webView.setWebChromeClient(new GeoWebChromeClient());
 
-        webView.loadUrl("http://shaiii.com/egsm.html");
-        //webView.loadUrl("file:///android_asset/index.html");
+        //webView.loadUrl("http://shaiii.com/egsm.html");
+        webView.loadUrl("file:///android_asset/index.html");
     }
 
     @Override
