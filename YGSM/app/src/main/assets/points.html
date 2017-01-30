@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>易购商盟</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/swiper.min.css" rel="stylesheet">
+    <link href="./css/egsm.css" rel="stylesheet">
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/swiper.min.js"></script>
+    <script src="./js/egsm.js"></script>
+    <script>
+	data = JSON.parse(localStorage.user);
+	points = '<div class="panel panel-default"> <div style="text-align:center;padding:50px;"> <img src="./images/money.jpg" width="50%"/> </div> <ul class="list-group"> <li class="list-group-item"> <span class="badge">'+data.integral+'</span> 可用积分: </li> <li class="list-group-item"> <span class="badge">'+ data.credit_integral+'</span> 消费积分 </li> <li class="list-group-item"> <span class="badge">'+data.back_integral+'</span> 已赠积分 </li> <li class="list-group-item"> <span class="badge">'+ data.surplus_integral+'</span> 结余消费积分 </li> </ul> </div>';
+	$(function(){
+	    $('.content').html(points);
+	});
+    </script>
+  </head>
+  <body>
+        <nav class="navbar navbar-default secondary navbar-head navbar-fixed-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <div class="title">
+                    我的积分
+                </div>
+                <a class="navbar-brand goback" href="#"><span class="glyphicon glyphicon-menu-left"></span></a>
+            </div>
+          </div><!-- /.container-fluid -->
+        </nav>
+
+        <div style="height:35px;width: 100%"></div>
+
+        <div class="content"></div>
+
+  </body>
+</html>

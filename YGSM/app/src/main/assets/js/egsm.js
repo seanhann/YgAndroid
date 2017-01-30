@@ -80,14 +80,6 @@ $(document).ready(function() {
 		}
 	});
 
-	$("a[actionId]").click(function(e){
-        localStorage.actionId = $(this).attr('actionId');
-
-        window.location.href = './staff.html';
-
-        e.preventDefault();
-	});
-
     $("img.captcha-img").attr('src', baseUrl+'/captcha');
 
 	$(".refresh").click(function(){
