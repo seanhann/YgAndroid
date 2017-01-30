@@ -1,4 +1,5 @@
 var baseUrl = 'http://yg.shaiii.com';
+var fileUrl = 'http://www.egousm.com';
 $(document).ready(function() {
 	$.ajaxSetup({
 	    beforeSend: function(xhr, options) {
@@ -66,6 +67,11 @@ $(document).ready(function() {
     });
 
 	init();
+
+	$(".goback").click(function(e){
+		window.history.back();
+		e.preventDefault();	
+	});
 
 	$(".require-auth a").click(function(e){
 		if(!localStorage.user){
