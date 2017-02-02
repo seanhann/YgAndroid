@@ -68,6 +68,16 @@ $(document).ready(function() {
 
 	init();
 
+	if($("input[name='search']")){
+        	$.get('/api/hotSearch',function(data){
+			html = '';
+        	        $.each(data, function(i, v){
+				html += '<li><a href="./search.html?search='+decodeURIComponent(v.key_words)+'">'+decodeURIComponent(v.key_words)+'</a></li>';		
+			});
+			$(".hot-list").html(html);
+        	});
+	}
+
 	$(".goback").click(function(e){
 		window.history.back();
 		e.preventDefault();	
@@ -204,7 +214,7 @@ $(document).ready(function() {
 	});
 
 	$(".search form").submit(function(e){
-		window.location.href = '/search/'+$(this).find("input[name='search']").val();
+		window.location.href = './search.html?search='+$(this).find("input[name='search']").val();
 		e.preventDefault();
 	});
 
@@ -219,7 +229,7 @@ $(document).ready(function() {
 		var h = localStorage.history ? JSON.parse( localStorage.history ) : [];
 		var list = '';
 		$.each(h, function(i, v){
-			list += '<li><a href="/search/'+v+'">'+v+'</a></li>';
+			list += '<li><a href="./search.html?search=/'+v+'">'+v+'</a></li>';
 		});	
 		$('.history-search ul').html(list);
 	});

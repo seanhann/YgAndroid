@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>易购商盟</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/swiper.min.css" rel="stylesheet">
+    <link href="./css/egsm.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/swiper.min.js"></script>
+    <script src="./js/egsm.js"></script>
+<script>
+$(function(){
+	$('input[name="search"]').val( decodeURIComponent(window.location.search.replace('?search=','')) );
+
+	function search(){
+		var item = ' <li class="list-group-item btn"> <a href="'+baseUrl+'/detail/@id@"> <div class="media"> <div class="media-left"> <img alt="90x90" class="media-object" data-src="holder.js/90x90" src="http://www.egousm.com/@pic@" data-holder-rendered="true" style="width: 90px; height: 90px; border-radius: 5px;">	</div> <div class="media-body" style="padding: 5px"> <div class="media-heading" style="font-weight: bold; font-size:17px">@title@</div> <p style="font-size: 12px; color:#666">@content@</p> </div> </div> </a> </li>';
+
+		var map = ['@id@', '@title@', '@pic@', '@content@'];
+		$.get('/api/search/'+$('input[name="search"]').val(), function(data){
+			if(data){
+				var html = '';
+				$.each(data, function(i, v){
+					var res = item.replace(/@id@|@pic@|@title@|@content@/gi, function myFunction(x){
+						if(x == '@id@') return v.id;
+						if(x == '@title@') return v.title;
+						if(x == '@pic@') return v.picurl;
+						if(x == '@content@') return v.description;
+					});
+					html += res;
+				});
+				$(".content ul").append(html);
+			}else{
+				$(".bottom-loading").empty();	
+			}
+			$(".loading-page").css('display', 'none');
+		});
+	}
+
+	$(".search form").submit(function(e){
+		search();
+                e.preventDefault();
+        });
+
+	search();
+});
+</script>
+
+  </head>
+  <body>
+	<nav class="navbar navbar-default search navbar-head navbar-fixed-top">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      	<a class="navbar-brand" href="/">易购</a>
+		<div class="form-group form-head has-feedback has-feedback-left">
+		    <form action="/search" method="get">
+		    <input type="search" name="search" class="form-control" placeholder="输入商家/品类/商圈"  value="" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" data-toggle="collapse"/>
+		    </form>
+		    <i class="form-control-feedback glyphicon glyphicon-search"></i>
+		</div>
+	
+	    </div>
+	
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <div class="panel panel-default hot-search">
+	      <div class="panel-heading">热门搜索<a class="close" href="#">X</a></div>
+	      <div class="panel-body">
+	      <ul class="nav hot-list">
+	        <li><a href="/search/key_words">$hot->key_words</a></li>
+	      </ul>
+	      </div>
+	      </div>
+
+	      <div class="panel panel-default history-search">
+	      <div class="panel-heading">历史搜索</div>
+	      <div class="panel-body">
+	      <ul class="nav">
+	        <li><a href="#">历史搜索</a></li>
+	        <li><a href="#">历史搜索</a></li>
+	        <li><a href="#">历史搜索</a></li>
+	      </ul>
+	      </div>
+	      </div>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div style="height:35px;width: 100%"></div>
+
+<div class="loading-page">
+	<div class="middle"></div>
+	<div> <h1>易购商盟</h1> </div>
+	<div> <span class="glyphicon glyphicon-refresh spinning"></span> </div>
+</div>
+
+<div class="content">
+	<ul class="list-group">
+	</ul>
+</div>
+
+	<nav class="navbar navbar-default navbar-fixed-bottom"> 
+		<div class="container-fluid"> 
+			<div class="navbar-header"> 
+				<div class="btn-group btn-group btn-group-justified" role="group" aria-label="Justified button group"> 
+					<a href="./index.html" class="btn" role="button"><span class="glyphicon glyphicon-home"></span><br><span style=" font-size: 10px; ">首页</span></a>
+					<a href="./near.html" class="btn" role="button"><span class="glyphicon glyphicon-map-marker"></span><br><span style=" font-size: 10px; ">附近</span></a>
+					<a href="./info.html" class="btn" role="button"><span class="glyphicon glyphicon-user"></span><br><span style=" font-size: 10px; ">我的</span></a>
+				</div>
+			</div> 
+		</div> 
+	</nav>
+
+
+  </body>
+</html>
