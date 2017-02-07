@@ -1,4 +1,4 @@
-var baseUrl = 'http://yg.shaiii.com';
+var baseUrl = 'http://app.egousm.com/index.php';
 var fileUrl = 'http://www.egousm.com';
 $(document).ready(function() {
 	$.ajaxSetup({
