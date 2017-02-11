@@ -26,9 +26,14 @@
 <script>
 $(function(){
 	var page = 1;
-	function load(page){
-		var item = ' <li class="list-group-item btn"> <a href="'+baseUrl+'/detail/@id@"> <div class="media"> <div class="media-left"> <img alt="90x90" class="media-object" data-src="holder.js/90x90" src="http://www.egousm.com/@pic@" data-holder-rendered="true" style="width: 90px; height: 90px; border-radius: 5px;">	</div> <div class="media-body" style="padding: 5px"> <div class="media-heading" style="font-weight: bold; font-size:17px">@title@</div> <p style="font-size: 12px; color:#666">@content@</p> </div> </div> </a> </li>';
 
+	function load(page){
+		if(localStorage.user){
+			data = JSON.parse(localStorage.user);
+			var item = ' <li class="list-group-item btn"> <a href="'+baseUrl+'/detail/@id@/'+data.id+'|'+data.remember_token+'"> <div class="media"> <div class="media-left"> <img alt="90x90" class="media-object" data-src="holder.js/90x90" src="http://www.egousm.com/@pic@" data-holder-rendered="true" style="width: 90px; height: 90px; border-radius: 5px;">	</div> <div class="media-body" style="padding: 5px"> <div class="media-heading" style="font-weight: bold; font-size:17px">@title@</div> <p style="font-size: 12px; color:#666">@content@</p> </div> </div> </a> </li>';
+		}else{
+			var item = ' <li class="list-group-item btn"> <a href="'+baseUrl+'/detail/@id@/"> <div class="media"> <div class="media-left"> <img alt="90x90" class="media-object" data-src="holder.js/90x90" src="http://www.egousm.com/@pic@" data-holder-rendered="true" style="width: 90px; height: 90px; border-radius: 5px;">	</div> <div class="media-body" style="padding: 5px"> <div class="media-heading" style="font-weight: bold; font-size:17px">@title@</div> <p style="font-size: 12px; color:#666">@content@</p> </div> </div> </a> </li>';
+		}
 		var map = ['@id@', '@title@', '@pic@', '@content@'];
 		$.get('/content?page='+page, function(data){
 			if(data.length > 0){

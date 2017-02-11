@@ -21,10 +21,50 @@
     <script src="./js/swiper.min.js"></script>
     <script src="./js/egsm.js"></script>
     <script>
-	data = JSON.parse(localStorage.user);
-	info = '<div class="login"> <div class="login-page"> <form class="info-form" method="post"> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">昵称:</span> <input type="text" name="cnname" class="form-control no-border" style="box-shadow:none" value="'+ data.cnname +'" placeholder="'+ (data.cnname == "" ? "设置昵称 4-15位" : data.cnname) +'" pattern=".{4,15}" > <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">性别:</span> <select name="sex" class="form-control no-border"> <option '+ (data.sex == 0 ? "selected" : "") +' value="0">男</option> <option '+ (data.sex == 1 ? "selected" : "") +' value="1">女</option> </select> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">邮件:</span> <input type="email" name="email" class="form-control no-border" style="box-shadow:none" value="'+ data.email +'" placeholder="'+ (data.email == "" ? "设置邮件" : data.email) +'"> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">手机:</span> <input type="number" disabled class="form-control no-border" style="box-shadow:none" value="'+ data.username +'" placeholder="'+ data.username +'" pattern="\d*"> <span class="glyphicon glyphicon-ban-circle form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">QQ:</span> <input type="text" name="qqnum" class="form-control no-border" style="box-shadow:none" value="'+ data.qqnum +'" placeholder="'+ (data.qqnum == "" ? "qq号码 5-11位 " : data.qqnum) +'" pattern="\d{5,11}"> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <button type="submit" class="btn btn-info btn-login" data-placement="top" data-loading-text="提交中..." data-toggle="tooltip" data-placement="bottom" title="登录">提交</button> </form> </div> </div>';
+    if(localStorage.user){
+        data = JSON.parse(localStorage.user);
+    }else{
+        data = {};
+    }
+
+    function updateInfo(){
+
+        $(".info-form input, .info-form select").each(function(){
+            data[$(this).attr('name')] = $(this).val();
+        });
+        localStorage.user = JSON.stringify(data);
+    }
+    function infoPageBind(){
+        $(".info-form select").change(function(){
+            $(".btn-info").css('display', 'inline-block');
+        });
+
+        $(".info-form input").keyup(function(){
+            $(".btn-info").css('display', 'inline-block');
+        });
+
+        $(".info-form").submit(function(event){
+                var $btn = $(this).find(":submit").button('loading');
+                $.post('api/info',$(this).serialize(), function(data){
+                        if(data){
+                                $(".info-form :submit").attr('title', data.msg).tooltip('show').on('shown.bs.tooltip', function () {
+                                        setTimeout(function(){ $(".info-form :submit").tooltip('hide'); }, 1500);
+                                });
+                                if(data.code == 1){
+                                    updateInfo();
+                                }
+                        }
+                }).always(function(){
+                        $btn.button('reset');
+                });
+                event.preventDefault();
+        });
+    }
+
+	info = '<div class="login"> <div class="login-page"> <form class="info-form" method="post"> <input type="hidden" name="token" value='+data.id+'|'+data.remember_token+'> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">昵称:</span> <input type="text" name="cnname" disable class="form-control no-border" style="box-shadow:none" value="'+ data.cnname +'" placeholder="'+ (data.cnname == "" ? "设置昵称 4-15位" : data.cnname) +'" pattern=".{4,15}" > <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">性别:</span> <select name="sex" class="form-control no-border"> <option '+ (data.sex == 0 ? "selected" : "") +' value="0">男</option> <option '+ (data.sex == 1 ? "selected" : "") +' value="1">女</option> </select> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">邮件:</span> <input type="email" name="email" class="form-control no-border" style="box-shadow:none" value="'+ data.email +'" placeholder="'+ (data.email == "" ? "设置邮件" : data.email) +'"> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">手机:</span> <input type="number" disabled class="form-control no-border" style="box-shadow:none" value="'+ data.username +'" placeholder="'+ data.username +'" pattern="\d*"> <span class="glyphicon glyphicon-ban-circle form-control-feedback"></span> </div> </div> <div class="form-group has-feedback"> <div class="input-group"> <span class="input-group-addon">QQ:</span> <input type="text" name="qqnum" class="form-control no-border" style="box-shadow:none" value="'+ data.qqnum +'" placeholder="'+ (data.qqnum == "" ? "qq号码 5-11位 " : data.qqnum) +'" pattern="[0-9]{5,11}"> <span class="glyphicon glyphicon-pencil form-control-feedback"></span> </div> </div> <button type="submit" class="btn btn-info btn-login" data-placement="top" data-loading-text="提交中..." data-toggle="tooltip" data-placement="bottom" title="登录">提交</button> </form> </div> </div>';
 	$(function(){
 	    $('.content').html(info);
+	    infoPageBind();
 	});
     </script>
   </head>

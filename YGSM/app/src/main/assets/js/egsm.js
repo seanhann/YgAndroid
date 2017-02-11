@@ -1,4 +1,4 @@
-var baseUrl = 'http://yg.shaiii.com';
+var baseUrl = 'http://app.egousm.com/index.php/';
 var fileUrl = 'http://www.egousm.com';
 $(document).ready(function() {
 	$.ajaxSetup({
@@ -7,8 +7,7 @@ $(document).ready(function() {
 	            options.url = baseUrl + options.url;
 	        }
 	    }
-	})
-
+	});
 
 	function loginSuccess(data){
 		localStorage.authFail = 0;
@@ -49,7 +48,12 @@ $(document).ready(function() {
 	}
 
 	function refreshCaptcha(){
-		$(".captcha-img").attr('src', baseUrl+'/captcha');
+        if($(".login-form").length){
+            $.get('api/captcha',function(data){
+                $("input[name='token']").val(data[0]);
+                $(".captcha-img").attr('src', data[1]);
+            });
+        }
 	}
 
 	function init(){
@@ -68,11 +72,11 @@ $(document).ready(function() {
 
 	init();
 
-	if($("input[name='search']")){
+	if($("input[name='search']").length){
         	$.get('/api/hotSearch',function(data){
 			html = '';
         	        $.each(data, function(i, v){
-				html += '<li><a href="./search.html?search='+decodeURIComponent(v.key_words)+'">'+decodeURIComponent(v.key_words)+'</a></li>';		
+				html += '<li><a href="./search.html?search='+decodeURIComponent(v.key_words)+'">'+decodeURIComponent(v.key_words)+'</a></li>';
 			});
 			$(".hot-list").html(html);
         	});
@@ -90,7 +94,9 @@ $(document).ready(function() {
 		}
 	});
 
-    $("img.captcha-img").attr('src', baseUrl+'/captcha');
+    if($(".login-form").length){
+        refreshCaptcha();
+    }
 
 	$(".refresh").click(function(){
 		refreshCaptcha();
@@ -100,7 +106,7 @@ $(document).ready(function() {
 
 	$(".login-form").submit(function(event){
 		var $btn = $(this).find(":submit").button('loading');
-		$.post('/login',$(this).serialize(), function(data){
+		$.post('api/login',$(this).serialize(), function(data){
 			if(data){
 				if(data.code == 1){
 					loginSuccess(data.msg);
@@ -131,7 +137,7 @@ $(document).ready(function() {
 			});	
 		}else{
 			var $btn = $(this).find(":submit").button('loading');
-			$.post('/regist',$(this).serialize(), function(data){
+			$.post('api/regist',$(this).serialize(), function(data){
 				if(data){
 					if(data.code == 1){
 						loginSuccess(data.msg);
@@ -148,23 +154,7 @@ $(document).ready(function() {
 		event.preventDefault();
 	});
 
-        $(".info-form").submit(function(event){
-                var $btn = $(this).find(":submit").button('loading');
-                $.post('/info',$(this).serialize(), function(data){
-                        if(data){
-                                $(".info-form :submit").attr('data-original-title', data.msg).tooltip('show').on('shown.bs.tooltip', function () {
-                                        setTimeout(function(){ $(".info-form :submit").tooltip('hide'); }, 1500);
-                                });
-                        }
-                }).always(function(){
-                        $btn.button('reset');
-                });
-                event.preventDefault();
-        });
-        $(".info-form input, .info-form select").change(function(){
-                $(".btn-info").css('display', 'inline-block');
 
-        });
 
         $(".login-form input").keyup(function(){
                 if( $(".login-form input[name='username']").val() != '' &&  $(".login-form input[name='password']").val() != '' && $(".login-form input[name='captcha']").val() != ''){
@@ -272,7 +262,7 @@ $(document).ready(function() {
 					setTimeout(function(){ $(".panel-heading[data-toggle='tooltip']").tooltip('hide'); }, 1500);
 				});
 			}	
-		});	
+		});
 		e.preventDefault();
 	});
 });
