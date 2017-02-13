@@ -35,7 +35,9 @@ $(function(){
 		$.get('/api/search/'+$('input[name="search"]').val(), function(data){
 			if(data){
 				var html = '';
-				if(data.length){
+				if(data.length == 0){
+					html = '<div style="text-align:center; padding: 50px 0px 0px 0px"> <img src="./images/nothing.ico" alt="..." style="width:100px"> <div class="caption"> <p style=" text-align: center; ">主人,没找到相关商家</p> </div> </div>';
+				}else{
 					$.each(data, function(i, v){
 						var res = item.replace(/@id@|@pic@|@title@|@content@/gi, function myFunction(x){
 							if(x == '@id@') return v.id;
@@ -45,9 +47,7 @@ $(function(){
 						});
 						html += res;
 					});
-				}else{
-					html = '<div style="text-align:center; padding: 50px 0px 0px 0px"> <img src="./images/nothing.ico" alt="..." style="width:100px"> <div class="caption"> <p style=" text-align: center; ">主人,没找到相关商家</p> </div> </div>';
-				}
+					}
 				$(".content ul").append(html);
 			}else{
 				$(".bottom-loading").empty();	
